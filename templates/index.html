@@ -1,0 +1,33 @@
+<html>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body>
+  <h1>Terrorist Attack Database: Welcome!</h1>
+
+  <div>
+    <select>
+    {% for n in data %}
+      <option value="{{ n }}">{{ n }}</option>
+    {% endfor %}
+    </select>
+  </div>
+
+<p><a href="historical">Incidents in the past...</a></p>
+<p><a href="geography">Where incidents took place?</a></p>
+<p><a href="criminals">Who were the bad asses?</a></p>
+<p><a href="lookup">If you know the incident ID...</a></p>
+
+<form method="POST" action="/add">
+<p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
+</form>
+
+</body>
+
+
+</html>
