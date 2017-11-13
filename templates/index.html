@@ -10,13 +10,21 @@
 <body>
   <h1>Terrorist Attack Database: Welcome!</h1>
 
-  <div>
-    <select>
-    {% for n in data %}
-      <option value="{{ n }}">{{ n }}</option>
-    {% endfor %}
-    </select>
-  </div>
+<form method="POST" action="/query">
+  <select name = "date">
+  {% for n in data %}
+    <option value="{{ n }}">{{ n }}</option>
+  {% endfor %}
+  </select>
+  <select name="options" size="4" multiple>
+    <option value="weapons.type">Weapons</option>
+    <option value="perp_name">Perpetrators</option>
+    <option value="form_of_gov">Government Response</option>
+    <option value="lat_long">Location</option>
+  </select>
+  <br><br>
+  <input type="submit">
+</form>
 
 <p><a href="historical">Incidents in the past...</a></p>
 <p><a href="geography">Where incidents took place?</a></p>

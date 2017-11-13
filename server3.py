@@ -78,8 +78,8 @@ def teardown_request(exception):
 # 
 # see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
 # see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
-#
-@app.route('/')
+
+@app.route('/', methods=['POST', 'GET'])
 def index():
   """
   request is a special object that Flask provides to access web request information:
@@ -98,10 +98,13 @@ def index():
   #
   # example of a database query
   #
-  cursor = g.conn.execute("SELECT name FROM test")
-  names = []
+  cursor = g.conn.execute("SELECT attack_date FROM attacked")
+  dates = []
+  prev = 'empty'
   for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
+    if result[0][:8] not in prev:
+      dates.append(result[0][:8])  # can also be accessed using result[0]
+    prev = result[0][:8]
   cursor.close()
 
   #
@@ -130,7 +133,7 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = names)
+  context = dict(data = dates)
 
 
   #
@@ -140,9 +143,9 @@ def index():
   return render_template("index.html", **context)
 
 
-@app.route('/historical')
-def historical():
-  return render_template("historical.html")
+# @app.route('/historical')
+# def historical():
+#   return render_template("historical.html")
 
 @app.route('/geography')
 def geography():
@@ -168,6 +171,33 @@ def add():
   g.conn.execute('INSERT INTO test (name) VALUES (%s)', name)
   return redirect('/')
 
+@app.route('/query', methods=['POST', 'GET'])
+def query():
+  time = request.form['date']
+  s = time + '%%'
+  options = request.form.getlist('options')
+  t = 'event_id'
+  if len(options) > 1:
+    for i in range(len(options)-1):
+      t += options[i] + ' , '
+    t += options[-1]
+    print(t)
+  # #cursor = g.conn.execute('SELECT event_id FROM attacked WHERE attacked_date LIKE %s', s)
+  cursor = g.conn.execute('SELECT A.event_id, groupname AS Perpetrators, T.name AS Victims FROM attacked A, perpetrators P, targets T WHERE A.attack_date LIKE %s AND A.perp_id LIKE P.perp_id AND A.targ_id = T.targ_id', s)
+
+  events = []
+  #perps = []
+  #victims = []
+  for result in cursor:
+    print(result)
+    events.append(result)  # can also be accessed using result[0]
+    #perps.append(result[1])
+    #victims.append(result[2])
+  cursor.close()
+  context = dict(data = events)
+
+  return render_template("historical.html", **context)
+#  return redirect('/')
 
 @app.route('/login')
 def login():

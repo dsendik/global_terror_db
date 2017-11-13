@@ -1,10 +1,24 @@
 <html>
-hello, I am another file!
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
 
-<form method="POST">
-    <input type="text" name="game_id"/>
-    <input type="submit" name="action" value="Start"/>
-    <input type="submit" name="action" value="Stop"/>
-</form>
+<table style="width:50%">
+  <tr>
+    <th>Event_id</th>
+    <th>Perpetrators</th>
+    <th>Victims</th>
+  </tr>
+{% for n in data %}
+  <tr>
+  {% for item in n %}
+	<td>{{ item }}</td>
+  {% endfor %}
+  </tr>
+{% endfor %}
+</table>
 
 </html>
