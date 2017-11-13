@@ -1,1 +1,41 @@
-hello, I am another file!
+<html>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+<table style="width:70%">
+  <tr>
+{% for l in lists %}
+  <th>{{ l }}</th>
+{% endfor %}
+  </tr>
+
+{% for n in data %}
+  <tr>
+  {% for item in n %}
+	<td>{{ item }}</td>
+  {% endfor %}
+  </tr>
+{% endfor %}
+</table>
+
+<form method="POST" action="/lookup">
+Enter event id to learn about...
+  <input type="text" name="id"> 
+  <select name = "option">
+    <option value="location">Where it took place?</option>
+    <option value="weapons">What weapons did they use?</option>
+    <option value="govt">Government report</option>
+    <option value="relevance">Relevance to other events</option>
+    <option value="damage">Damage on properties</option>
+  </select>
+  <br><br>
+  <input type="submit">
+</form>
+
+<p><a href="/">Go back</a></p>
+
+</html>

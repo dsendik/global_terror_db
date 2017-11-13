@@ -100,7 +100,7 @@ def index():
   #
   cursor = g.conn.execute("SELECT attack_date FROM attacked")
   dates = []
-  prev = 'empty'
+  prev = '19700000'
   for result in cursor:
     if result[0][:8] not in prev:
       dates.append(result[0][:8])  # can also be accessed using result[0]
@@ -143,56 +143,61 @@ def index():
   return render_template("index.html", **context)
 
 
-# @app.route('/historical')
-# def historical():
-#   return render_template("historical.html")
-
-@app.route('/geography')
-def geography():
-  return render_template("geography.html")
-
-@app.route('/criminals')
-def criminals():
-  return render_template("criminals.html")
-
-@app.route('/lookup')
+@app.route('/lookup', methods=['POST', 'GET'])
 def lookup():
-  return render_template("lookup.html")
+  event_id = request.form['id']
+  entity = request.form['option']
+  l = []
+  if entity == 'location':
+    cursor = g.conn.execute('SELECT event_id, L.latitude, L.longitude, country, city FROM location L, located_in Loc WHERE Loc.event_id LIKE %s AND L.latitude LIKE Loc.latitude', event_id)
+    l = ['event_id', 'Latitude', 'Longitude', 'Country', 'City']
+  elif entity == 'weapons':
+    cursor = g.conn.execute('SELECT event_id, type, subtype, details FROM weapons W, utilized U, (SELECT A.perp_id, A.event_id FROM attacked A join perpetrators P ON A.perp_id LIKE P.perp_id WHERE A.event_id LIKE %s) X WHERE X.perp_id LIKE U.perp_id AND U.wep_id = W.wep_id', event_id)
+    l = ['event_id', 'Type', 'Subtype', 'Details']
+  elif entity == 'govt':
+    cursor = g.conn.execute('SELECT event_id, report, details FROM investigated_by_govt I, governments G WHERE I.event_id LIKE %s AND I.gov_id = G.gov_id', (event_id))
+    l = ['event_id', 'Report', 'Details']
+  elif entity == 'relevance':
+    cursor = g.conn.execute('SELECT event_id, rel_event_id FROM related_to R WHERE R.event_id LIKE %s', (event_id))
+    l = ['event_id', 'Relevant event_id']
+  elif entity == 'damage':
+    cursor = g.conn.execute('SELECT event_id, dmg_amt, prop_value, dmg_details FROM caused_damage_to C, property P WHERE C.event_id LIKE %s AND C.prop_id = P.prop_id',event_id)
+    l = ['event_id', 'Damage amount', 'Property value', 'Damage details']
 
-# @app.route('/relevance')
-# def relevance():
-#   return render_template("relevance.html")
-# #<p><a href="relevance">Is there something relevant?</a></p>
+  events = []
+  for result in cursor:
+    #print(result)
+    events.append(result)
+  cursor.close()
+  context = dict(data = events, lists = l)
+
+  return render_template("lookup.html", **context)
 
 # Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-  name = request.form['name']
-  g.conn.execute('INSERT INTO test (name) VALUES (%s)', name)
-  return redirect('/')
+# @app.route('/add', methods=['POST'])
+# def add():
+#   name = request.form['name']
+#   g.conn.execute('INSERT INTO test (name) VALUES (%s)', name)
+#   return redirect('/')
 
 @app.route('/query', methods=['POST', 'GET'])
 def query():
   time = request.form['date']
   s = time + '%%'
-  options = request.form.getlist('options')
-  t = 'event_id'
-  if len(options) > 1:
-    for i in range(len(options)-1):
-      t += options[i] + ' , '
-    t += options[-1]
-    print(t)
+  # options = request.form.getlist('options')
+  # t = 'event_id'
+  # if len(options) > 1:
+  #   for i in range(len(options)-1):
+  #     t += options[i] + ' , '
+  #   t += options[-1]
+  #   print(t)
   # #cursor = g.conn.execute('SELECT event_id FROM attacked WHERE attacked_date LIKE %s', s)
-  cursor = g.conn.execute('SELECT A.event_id, groupname AS Perpetrators, T.name AS Victims FROM attacked A, perpetrators P, targets T WHERE A.attack_date LIKE %s AND A.perp_id LIKE P.perp_id AND A.targ_id = T.targ_id', s)
+  cursor = g.conn.execute('SELECT A.event_id, groupname AS perpetrators, motive, num_perps, T.name AS Victims, nationality, type FROM attacked A, perpetrators P, targets T WHERE A.attack_date LIKE %s AND A.perp_id LIKE P.perp_id AND A.targ_id = T.targ_id', s)
 
   events = []
-  #perps = []
-  #victims = []
   for result in cursor:
-    print(result)
-    events.append(result)  # can also be accessed using result[0]
-    #perps.append(result[1])
-    #victims.append(result[2])
+    #print(result)
+    events.append(result)  
   cursor.close()
   context = dict(data = events)
 

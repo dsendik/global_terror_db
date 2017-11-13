@@ -8,31 +8,17 @@
 
 
 <body>
-  <h1>Terrorist Attack Database: Welcome!</h1>
+  <h1>Global Terrorist Attack Database: Welcome!</h1>
+  Select a date to learn more about the attacks which took place on that day.
 
 <form method="POST" action="/query">
-  <select name = "date">
+  <select name = "date" size="20">
   {% for n in data %}
     <option value="{{ n }}">{{ n }}</option>
   {% endfor %}
   </select>
-  <select name="options" size="4" multiple>
-    <option value="weapons.type">Weapons</option>
-    <option value="perp_name">Perpetrators</option>
-    <option value="form_of_gov">Government Response</option>
-    <option value="lat_long">Location</option>
-  </select>
   <br><br>
   <input type="submit">
-</form>
-
-<p><a href="historical">Incidents in the past...</a></p>
-<p><a href="geography">Where incidents took place?</a></p>
-<p><a href="criminals">Who were the bad asses?</a></p>
-<p><a href="lookup">If you know the incident ID...</a></p>
-
-<form method="POST" action="/add">
-<p>Name of new computer scientist: <input type="text" name="name"> <input type="submit" value="Add"></p>
 </form>
 
 </body>
