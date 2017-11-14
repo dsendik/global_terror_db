@@ -1,0 +1,42 @@
+<html>
+<head> 
+</head>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+        table, th, td {
+    border: 1px solid black;
+}
+tr:nth-child(even) {background-color: #f2f2f2}
+
+div.scrollable {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+</div>
+  </style>
+
+<table>
+  <tr>
+{% for l in lists %}
+  <th>{{ l }}</th>
+{% endfor %}
+  </tr>
+
+{% for n in data %}
+  <tr>
+  {% for item in n %}
+  <td><div style="width:105%; max-height:170px; overflow:auto">{{ item }}</div></td>
+  {% endfor %}
+  </tr>
+{% endfor %}
+</table>
+
+<p><a href="/">Go back</a></p>
+
+</html>
