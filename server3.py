@@ -172,13 +172,6 @@ def lookup():
   context = dict(data = events, lists = l)
   return render_template("lookup.html", **context)
 
-class ExampleForm(Form):
-  example = SelectMultipleField('Pick Things!', choices = data)
-
-@app.route('/')
-def home():
-  form = ExampleForm()
-  return render_template_string('<form>{{  form.example  }}</form>', form=form)
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
