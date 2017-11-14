@@ -36,7 +36,19 @@ div.scrollable {
   </tr>
 {% endfor %}
 </table>
-
+<form method="POST" action="/lookup">
+Enter event id to learn about...
+  <input type="text" name="id"> 
+  <select name = "option">
+    <option value="location">Where it took place?</option>
+    <option value="weapons">What weapons did they use?</option>
+    <option value="govt">Government report</option>
+    <option value="relevance">Relevance to other events</option>
+    <option value="damage">Damage on properties</option>
+  </select>
+  <br><br>
+  <input type="submit">
+</form>
 <p><a href="/">Go back</a></p>
 
 </html>

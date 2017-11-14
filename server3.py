@@ -221,6 +221,20 @@ def nine_eleven():
 
   return render_template("nine_eleven.html", **context)
 
+@app.route('/nyc', methods=['POST', 'GET'])
+def nyc():
+  cursor = g.conn.execute(" SELECT DISTINCT ON (incident.event_id) incident.event_id, location.city, incident.latitude, incident.longitude, suicide_attack, num_killed, num_injured, name, affiliation, groupname, motive, summary FROM incident JOIN located_in ON incident.event_id = located_in.event_id JOIN attacked ON incident.event_id = attacked.event_id JOIN location ON located_in.latitude = location.latitude AND located_in.longitude = location.longitude INNER JOIN targets ON targets.targ_id = attacked.targ_id INNER JOIN perpetrators ON perpetrators.perp_id = attacked.perp_id WHERE location.city = 'New York City' ORDER BY incident.event_id ")
+  l = []
+  l = ['event date', 'Latitude', 'Longitude', 'Suicide attack', 'Deaths', 'Injuries', 'Target', 'Target Affiliation', 'Terrorist Group', 'Terrorist motive', 'Summary']
+
+  events = []
+  for result in cursor:
+    events.append(result)
+  cursor.close()
+  context = dict(data = events, lists = l)
+
+  return render_template("nyc.html", **context)
+
 @app.route('/okc', methods=['POST', 'GET'])
 def okc():
   cursor = g.conn.execute(" select DISTINCT ON (incident.event_id) incident.event_id, suicide_attack, num_killed, num_injured, groupname, dmg_amt, dmg_details, name, affiliation, summary from incident INNER JOIN caused_damage_to ON caused_damage_to.event_id = incident.event_id INNER JOIN property ON caused_damage_to.prop_id = property.prop_id INNER JOIN located_in ON incident.event_id = located_in.event_id INNER JOIN attacked ON incident.event_id = attacked.event_id INNER JOIN location ON located_in.latitude = location.latitude INNER JOIN targets ON targets.targ_id = attacked.targ_id INNER JOIN perpetrators ON perpetrators.perp_id = attacked.perp_id WHERE incident.event_id LIKE '19950419%%' and num_killed = 168 ORDER BY incident.event_id ")
