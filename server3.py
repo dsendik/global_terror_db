@@ -179,10 +179,10 @@ def search():
   print text
   processed_text = text.upper()
   l = []
-  sql = 'SELECT type,subtype,details FROM weapons WHERE weapons.subtype LIKE %s'
-  args = ['%' + text + '%']
+  sql = 'SELECT type,subtype,details FROM weapons WHERE weapons.type LIKE %s OR weapons.subtype LIKE %s OR weapons.details LIKE %s'
+  args = ['%' + text + '%', '%' + text + '%', '%' + text + '%']
   cursor = g.conn.execute(sql, args)
-  l = ['Weapon type']
+  l = ['Weapon type', 'Subtype', 'Details']
 
   events = []
   for result in cursor:
