@@ -170,8 +170,33 @@ def lookup():
     events.append(result)
   cursor.close()
   context = dict(data = events, lists = l)
-
   return render_template("lookup.html", **context)
+
+class ExampleForm(Form):
+  example = SelectMultipleField('Pick Things!', choices = data)
+
+@app.route('/')
+def home():
+  form = ExampleForm()
+  return render_template_string('<form>{{  form.example  }}</form>', form=form)
+
+@app.route('/search', methods=['POST', 'GET'])
+def search():
+  text = request.form['text'].capitalize()
+  print text
+  processed_text = text.upper()
+  l = []
+  sql = 'SELECT type,subtype,details FROM weapons WHERE weapons.subtype LIKE %s'
+  args = ['%' + text + '%']
+  cursor = g.conn.execute(sql, args)
+  l = ['Weapon type']
+
+  events = []
+  for result in cursor:
+    events.append(result)
+  cursor.close()
+  context = dict(data = events,lists = l)
+  return render_template("search.html", **context) 
 
 # Example of adding new data to the database
 # @app.route('/add', methods=['POST'])
@@ -180,6 +205,34 @@ def lookup():
 #   g.conn.execute('INSERT INTO test (name) VALUES (%s)', name)
 #   return redirect('/')
 
+@app.route('/nine_eleven', methods=['POST', 'GET'])
+def nine_eleven():
+  cursor = g.conn.execute(" SELECT DISTINCT ON (incident.event_id) incident.event_id, incident.latitude, incident.longitude, suicide_attack, num_killed, num_injured, name, affiliation, groupname, motive, summary FROM incident INNER JOIN located_in ON incident.event_id = located_in.event_id INNER JOIN attacked ON incident.event_id = attacked.event_id INNER JOIN location ON located_in.latitude = location.latitude INNER JOIN targets ON targets.targ_id = attacked.targ_id INNER JOIN perpetrators ON perpetrators.perp_id = attacked.perp_id WHERE incident.event_id LIKE '20010911%%' and incident.type = 'Hijacking' ORDER BY incident.event_id ")
+  l = []
+  l = ['event date', 'Latitude', 'Longitude', 'Suicide attack', 'Deaths', 'Injuries', 'Target', 'Target Affiliation', 'Terrorist Group', 'Terrorist motive', 'Summary']
+  
+  events = []
+  for result in cursor:
+    events.append(result)
+  cursor.close()
+  context = dict(data = events, lists = l)
+
+  return render_template("nine_eleven.html", **context)
+
+@app.route('/okc', methods=['POST', 'GET'])
+def okc():
+  cursor = g.conn.execute(" select DISTINCT ON (incident.event_id) incident.event_id, suicide_attack, num_killed, num_injured, groupname, dmg_amt, dmg_details, name, affiliation, summary from incident INNER JOIN caused_damage_to ON caused_damage_to.event_id = incident.event_id INNER JOIN property ON caused_damage_to.prop_id = property.prop_id INNER JOIN located_in ON incident.event_id = located_in.event_id INNER JOIN attacked ON incident.event_id = attacked.event_id INNER JOIN location ON located_in.latitude = location.latitude INNER JOIN targets ON targets.targ_id = attacked.targ_id INNER JOIN perpetrators ON perpetrators.perp_id = attacked.perp_id WHERE incident.event_id LIKE '19950419%%' and num_killed = 168 ORDER BY incident.event_id ")
+  l = []
+  l = ['event date', 'Suicide attack', 'Deaths', 'Injuries', 'Terrorist group', 'Damage', 'Damage details', 'Target', 'Target affiliation', 'Summary']
+
+  events = []
+  for result in cursor:
+    events.append(result)
+  cursor.close()
+  context = dict(data = events, lists = l)
+
+  return render_template("okc.html", **context)
+ 
 @app.route('/query', methods=['POST', 'GET'])
 def query():
   time = request.form['date']
