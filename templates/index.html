@@ -6,7 +6,11 @@
     }
   </style>
 
-
+<style type="text/css">     
+    select {
+        width:130px;
+    }
+</style>
 <body>
   <h1>Global Terrorist Attack Database: Welcome!</h1>
   Select a date to learn more about the attacks which took place on that day.
@@ -21,6 +25,17 @@
   <input type="submit">
 </form>
 <p>Search the database:</p>
+<p>Select a category to Search:</p>
+<form method="POST" action="/search">
+  <select name = "tables" size="4">
+  {% for n in data1 %}
+    <option value="{{ n }}">{{ n }}</option>
+  {% endfor %}
+  </select>
+  <br><br>
+  <input type="submit">
+</form>
+<p>Search based on weapon:</p>
 <form method="POST" action="/search">
     <input name="text">
     <input type="submit">

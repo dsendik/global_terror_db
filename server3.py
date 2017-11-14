@@ -106,7 +106,7 @@ def index():
       dates.append(result[0][:8])  # can also be accessed using result[0]
     prev = result[0][:8]
   cursor.close()
-
+  tables = ['relevant incidents', 'weapons', 'terrorist groups', 'location']
   #
   # Flask uses Jinja templates, which is an extension to HTML where you can
   # pass data to a template and dynamically generate HTML based on the data
@@ -133,7 +133,7 @@ def index():
   #     <div>{{n}}</div>
   #     {% endfor %}
   #
-  context = dict(data = dates)
+  context = dict(data = dates, data1 = tables)
 
 
   #
@@ -175,14 +175,23 @@ def lookup():
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
+  cursor1 = g.conn.execute("select attack_date FROM attacked")
+  prev = '19700000'
+  tables = []
+  for result in cursor1:
+    tables.append(result[0][:8])  # can also be accessed using result[0]
+    prev = result[0][:8]
+  cursor1.close()
+  context1 = dict(data1 = tables)
+  
   text = request.form['text'].capitalize()
   print text
   processed_text = text.upper()
   l = []
-  sql = 'SELECT type,subtype,details FROM weapons WHERE weapons.type LIKE %s OR weapons.subtype LIKE %s OR weapons.details LIKE %s'
+  sql = 'SELECT attacked.attack_date, perpetrators.groupname,weapons.type,weapons.subtype,weapons.details, perpetrators.motive, incident.num_killed, incident.num_injured FROM weapons JOIN utilized ON weapons.wep_id = utilized.wep_id JOIN perpetrators ON utilized.perp_id = perpetrators.perp_id JOIN attacked ON attacked.perp_id = perpetrators.perp_id JOIN incident ON incident.event_id = attacked.event_id WHERE weapons.type LIKE %s OR weapons.subtype LIKE %s OR weapons.details LIKE %s'
   args = ['%' + text + '%', '%' + text + '%', '%' + text + '%']
   cursor = g.conn.execute(sql, args)
-  l = ['Weapon type', 'Subtype', 'Details']
+  l = ['Date', 'Terrorist group', 'Weapon type', 'Subtype', 'Details', 'Motive', 'Killed','Wounded']
 
   events = []
   for result in cursor:
