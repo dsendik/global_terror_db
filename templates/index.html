@@ -1,47 +1,66 @@
 <html>
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></head>
   <style>
-    body{ 
-      font-size: 15pt;
-      font-family: arial;
-    }
+@charset "utf-8";
+ .custom-restricted {
+    height: 160px;
+    width: 150px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+ html, body {
+ margin: 0px;
+ padding: 20px;
+ border: 0px;
+ color: #000;
+ background: #fff;
+ }
+ html, body, p, th, td, li, dd, dt {
+ font: 1em Arial, Helvetica, sans-serif;
+ }
+ h1, h2, h3, h4, h5, h6 {
+ font-family: Arial, Helvetica, sans-serif;
+ }
+ h1 { font-size: 2em; }
+ h2 { font-size: 1.5em; }
+ h3 { font-size: 1.2em ; }
+ h4 { font-size: 1.0em; }
+ h5 { font-size: 0.9em; }
+ h6 { font-size: 0.8em; }
+ a:link { color: #00f; }
+ a:visited { color: #009; }
+ a:hover { color: #06f; }
+ a:active { color: #0cf; }
   </style>
 
 <style type="text/css">     
     select {
-        width:130px;
+        width:120px;
     }
 </style>
 <body>
   <h1>Global Terrorist Attack Database: Welcome!</h1>
   Select a date to learn more about the attacks which took place on that day.
 
-<form method="POST" action="/query">
-  <select name = "date" size="20">
-  {% for n in data %}
-    <option value="{{ n }}">{{ n }}</option>
-  {% endfor %}
-  </select>
+<form class="pure-form" method="POST" action="/query">
+        <select name="date">
+          {% for n in data%}
+            <option value="{{ n }}">{{ n }}</option>
+            {% endfor %}
+        </select>
+
   <br><br>
-  <input type="submit">
+  <input class="pure-button pure-button-primary" type="submit">
 </form>
 <p>Search the database:</p>
-<p>Select a category to Search:</p>
-<form method="POST" action="/search">
-  <select name = "tables" size="4">
-  {% for n in data1 %}
-    <option value="{{ n }}">{{ n }}</option>
-  {% endfor %}
-  </select>
-  <br><br>
-  <input type="submit">
-</form>
-<p>Search based on weapon:</p>
-<form method="POST" action="/search">
+<form class="pure-form"method="POST" action="/search">
     <input name="text">
-    <input type="submit">
+    <input class="pure-button pure-button-primary" type="submit">
 </form>
 
-  <h1>Notorious attacks
+  <h1>Interesting attacks
 <h6><a href="nine_eleven">9/11 Attacks</a></h6>
 <h6><a href="okc">Oklahoma City Bombing</a></h6>
 <h6><a href="nyc">All attacks in NYC</a></h6>

@@ -175,23 +175,12 @@ def lookup():
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
-  cursor1 = g.conn.execute("select attack_date FROM attacked")
-  prev = '19700000'
-  tables = []
-  for result in cursor1:
-    tables.append(result[0][:8])  # can also be accessed using result[0]
-    prev = result[0][:8]
-  cursor1.close()
-  context1 = dict(data1 = tables)
-  
   text = request.form['text'].capitalize()
-  print text
-  processed_text = text.upper()
   l = []
-  sql = 'SELECT attacked.attack_date, perpetrators.groupname,weapons.type,weapons.subtype,weapons.details, perpetrators.motive, incident.num_killed, incident.num_injured FROM weapons JOIN utilized ON weapons.wep_id = utilized.wep_id JOIN perpetrators ON utilized.perp_id = perpetrators.perp_id JOIN attacked ON attacked.perp_id = perpetrators.perp_id JOIN incident ON incident.event_id = attacked.event_id WHERE weapons.type LIKE %s OR weapons.subtype LIKE %s OR weapons.details LIKE %s'
-  args = ['%' + text + '%', '%' + text + '%', '%' + text + '%']
+  sql = ' SELECT attacked.attack_date, location.region, location.city, perpetrators.groupname,weapons.type,weapons.subtype,weapons.details, perpetrators.motive, targets.name, incident.num_killed, incident.num_injured FROM weapons JOIN utilized ON weapons.wep_id = utilized.wep_id JOIN perpetrators ON utilized.perp_id = perpetrators.perp_id JOIN attacked ON attacked.perp_id = perpetrators.perp_id JOIN incident ON incident.event_id = attacked.event_id JOIN located_in ON located_in.event_id = incident.event_id JOIN targets ON targets.targ_id = attacked.targ_id JOIN location ON located_in.latitude = location.latitude AND located_in.latitude = location.latitude WHERE weapons.type LIKE %s OR weapons.subtype LIKE %s OR weapons.details LIKE %s OR perpetrators.groupname LIKE %s OR perpetrators.subgroup LIKE %s OR targets.name LIKE %s OR location.city LIKE %s OR location.region LIKE %s OR location.prov_state LIKE %s' 
+  args = ['%' + text + '%', '%' + text + '%', '%' + text + '%', '%' + text + '%', '%' + text + '%', '%' + text + '%','%' + text + '%','%' + text + '%','%' + text + '%']
   cursor = g.conn.execute(sql, args)
-  l = ['Date', 'Terrorist group', 'Weapon type', 'Subtype', 'Details', 'Motive', 'Killed','Wounded']
+  l = ['Date', 'Region', 'City', 'Terrorist group', 'Weapon type', 'Subtype', 'Details', 'Motive','Target', 'Killed','Wounded']
 
   events = []
   for result in cursor:
@@ -223,9 +212,9 @@ def nine_eleven():
 
 @app.route('/nyc', methods=['POST', 'GET'])
 def nyc():
-  cursor = g.conn.execute(" SELECT DISTINCT ON (incident.event_id) incident.event_id, location.city, incident.latitude, incident.longitude, suicide_attack, num_killed, num_injured, name, affiliation, groupname, motive, summary FROM incident JOIN located_in ON incident.event_id = located_in.event_id JOIN attacked ON incident.event_id = attacked.event_id JOIN location ON located_in.latitude = location.latitude AND located_in.longitude = location.longitude INNER JOIN targets ON targets.targ_id = attacked.targ_id INNER JOIN perpetrators ON perpetrators.perp_id = attacked.perp_id WHERE location.city = 'New York City' ORDER BY incident.event_id ")
+  cursor = g.conn.execute(" SELECT DISTINCT ON (incident.event_id) attacked.attack_date, location.city, incident.latitude, incident.longitude, suicide_attack, num_killed, num_injured, name, affiliation, groupname, motive, summary FROM incident JOIN located_in ON incident.event_id = located_in.event_id JOIN attacked ON incident.event_id = attacked.event_id JOIN location ON located_in.latitude = location.latitude AND located_in.longitude = location.longitude INNER JOIN targets ON targets.targ_id = attacked.targ_id INNER JOIN perpetrators ON perpetrators.perp_id = attacked.perp_id WHERE location.city = 'New York City' ORDER BY incident.event_id ")
   l = []
-  l = ['event date', 'Latitude', 'Longitude', 'Suicide attack', 'Deaths', 'Injuries', 'Target', 'Target Affiliation', 'Terrorist Group', 'Terrorist motive', 'Summary']
+  l = ['event date', 'City', 'Latitude','Longitude', 'Suicide attack', 'Deaths', 'Injuries', 'Target', 'Target Affiliation', 'Terrorist Group', 'Terrorist motive', 'Summary']
 
   events = []
   for result in cursor:
