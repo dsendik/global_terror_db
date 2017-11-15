@@ -1,5 +1,5 @@
 PostgreSQL account: drs2176
-URL: http://localhost:8111/
+URL: http://35.196.23.41:8111/
 Description:
 We implemented our initial design concept, 
 that users would be able to query the database 
