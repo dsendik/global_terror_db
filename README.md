@@ -3,11 +3,9 @@
 This is a project for a database class that utilizes government-sourced data as a database of information that users can search through.
   
 <p align="center">
-<img src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" width="90%">
+<img src="https://github.com/dsendik/index.jpg" width="90%">
   </img>
 </p>
-Inline-style: 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
 ## Getting Started
 
