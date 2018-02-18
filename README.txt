@@ -1,5 +1,3 @@
-PostgreSQL account: drs2176
-URL: http://35.196.23.41:8111/
 Description:
 We implemented our initial design concept, 
 that users would be able to query the database 
@@ -14,7 +12,6 @@ effort with additional APIs. This functionality was
 replaced with specific queries showing interesting attacks and a
 keyword search.
 
-http://localhost:8111/lookup
 After initially querying on a date on the homepage,
 The user has the option to learn further about their chosen incident.
 From the query page, users can select from a list of 5 collections
@@ -35,7 +32,7 @@ tables such as 'related_to' is queried for selection 'Relevance to
 other events', and tables such as 'property' are queried for selection 
 'Damage on properties'.
 
-http://localhost:8111/search
+
 On the homepage, the user enters their search word 
 into the text box labeled 'Search the database:' 
 and clicks submit. This triggers server.py to run a
