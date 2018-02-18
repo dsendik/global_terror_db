@@ -1,6 +1,8 @@
 # Global Terrorism Database Web App
 
 This is a project for a database class that utilizes government-sourced data as a database of information that users can search through.
+  <img src="https://imgur.com/s3j2JhO" width="90%">
+  </img>
 
 ## Getting Started
 
