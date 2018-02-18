@@ -5,8 +5,9 @@ This is a project for a database class that utilizes government-sourced data as 
 <p align="center">
 <img src="https://github.com/dsendik/index.png" width="90%">
   </img>
+  <img src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" width="90%">
+  </img>
 </p>
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1"
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
