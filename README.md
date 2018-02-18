@@ -1,7 +1,7 @@
 # Global Terrorism Database Web App
 
 This is a project for a database class that utilizes government-sourced data as a database of information that users can search through.
-
+![Alt text](F:\Downloads\global_terror_db-master\global_terror_db-master\images)
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
