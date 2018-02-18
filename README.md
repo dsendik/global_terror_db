@@ -5,6 +5,7 @@ This is a project for a database class that utilizes government-sourced data as 
 <p align="center">
 <img src="https://imgur.com/s3j2JhO" width="90%">
   </img>
+  Format: ![Alt Text](https://imgur.com/s3j2JhO)
 </p>
 
 
