@@ -7,7 +7,7 @@ This is a project for a database class that utilizes government-sourced data as 
   </img>
   Format: ![Alt Text](https://imgur.com/s3j2JhO)
 </p>
-![](index.jpg)
+![](/index.jpg)
 
 ## Getting Started
 
