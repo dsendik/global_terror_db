@@ -6,6 +6,8 @@ This is a project for a database class that utilizes government-sourced data as 
 <img src="https://github.com/dsendik/global_terror_db/wiki" width="90%">
   </img>
 </p>
+Inline-style: 
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
 ## Getting Started
 
