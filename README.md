@@ -9,6 +9,7 @@ This is a project for a database class that utilizes government-sourced data as 
   </img>
 </p>
 ![alt text](https://raw.githubusercontent.com/dsendik/global_terror_db/index.png)
+![What is this](index.png)
 
 ## Getting Started
 
