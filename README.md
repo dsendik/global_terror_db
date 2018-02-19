@@ -8,7 +8,6 @@ This is a project for a database class that utilizes government-sourced data as 
   <img src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" width="90%">
   </img>
 </p>
-![alt text](https://raw.githubusercontent.com/dsendik/global_terror_db/index.png)
 ![What is this](index.png)
 
 ## Getting Started
