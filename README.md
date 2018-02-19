@@ -3,9 +3,7 @@
 This is a project for a database class that utilizes government-sourced data as a database of information that users can search through.
   
 <p align="center">
-<img src="https://github.com/dsendik/index.png" width="90%">
-  </img>
-  <img src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" width="90%">
+<img src="https://user-images.githubusercontent.com/26313010/36358679-3fdb7112-14e0-11e8-921b-e41fd87f9f96.png" width="90%">
   </img>
 </p>
 ![](index.png)
